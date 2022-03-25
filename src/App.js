@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { nanoid } from "nanoid";
+import Header from "./components/Header";
+import FeedbackList from "./components/FeedbackList";
+import FeedbackData from "./data/FeedbackData";
+import FeedbackStats from "./components/FeedbackStats";
+import FeedbackForm from "./components/FeedbackForm";
+import { useState } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [feedback, setFeedback] = useState(FeedbackData);
+
+    const handleDelete = (id) => {
+        setFeedback(feedback.filter((feedback) => feedback.id !== id));
+    };
+
+    const addFeedback = (newFeedback) => {
+        setFeedback([{ id: nanoid(), ...newFeedback }, ...feedback]);
+    };
+
+    return (
+        <>
+            <div className="App container is-fluid">
+                <Header title="Feedback UI" />
+                <FeedbackForm handleAdd={addFeedback} />
+                <FeedbackStats feedbacks={feedback} />
+                <FeedbackList
+                    feedbacks={feedback}
+                    handleDelete={handleDelete}
+                />
+            </div>
+        </>
+    );
 }
 
 export default App;

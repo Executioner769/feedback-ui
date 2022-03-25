@@ -1,9 +1,23 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function Header() {
+function Header(props) {
+    const { title } = props;
     return (
-        <>
-            <div>Header</div>
-        </>
+        <header>
+            <div className="box has-text-centered has-background-light">
+                <h2 className="subtitle is-2 is-bold">{title}</h2>
+            </div>
+        </header>
     );
 }
+
+Header.defaultProps = {
+    title: "Feedback UI",
+};
+
+Header.prototypes = {
+    title: PropTypes.string,
+};
+
+export default Header;
