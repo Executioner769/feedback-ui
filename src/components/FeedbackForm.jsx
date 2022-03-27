@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 import FeedbackButton from "./shared/FeedbackButton";
 
-function FeedbackForm({ handleAdd }) {
+function FeedbackForm() {
+    const { addFeedback, feedbackEdit, updateFeedback } =
+        useContext(FeedbackContext);
+
     const [text, setText] = useState("");
     const [buttonDisabled, setButtonDisabled] = useState(true);
     const [help, setHelp] = useState("");
     const [rating, setRating] = useState(5);
+
+    useEffect(() => {
+        if (feedbackEdit.isEditable === true) {
+            setButtonDisabled(false);
+            setText(feedbackEdit.item.review);
+            setRating(feedbackEdit.item.rating);
+        }
+    }, [feedbackEdit]);
 
     const handleTextChange = (e) => {
         if (text === "") {
@@ -23,8 +35,13 @@ function FeedbackForm({ handleAdd }) {
 
     const handleRatingChange = (e) => {
         setRating(Number(e.target.value));
-        console.log(rating);
     };
+
+    function backToDefault() {
+        setText("");
+        setRating(5);
+        setButtonDisabled(true);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -38,8 +55,13 @@ function FeedbackForm({ handleAdd }) {
             rating,
         };
 
-        handleAdd(newFeedback);
-        setText("");
+        if (feedbackEdit.isEditable === true) {
+            feedbackEdit.isEditable = false;
+            updateFeedback(feedbackEdit.item.id, newFeedback);
+        } else {
+            addFeedback(newFeedback);
+        }
+        backToDefault();
     };
 
     return (
@@ -53,18 +75,20 @@ function FeedbackForm({ handleAdd }) {
                     <div className="field has-addons">
                         <p className="control">
                             <span className="select">
-                                <select onChange={handleRatingChange}>
-                                    <option>5</option>
-                                    <option>4</option>
-                                    <option>3</option>
-                                    <option>2</option>
-                                    <option>1</option>
+                                <select
+                                    onChange={handleRatingChange}
+                                    value={rating}
+                                >
+                                    <option value={5}>5</option>
+                                    <option value={4}>4</option>
+                                    <option value={3}>3</option>
+                                    <option value={2}>2</option>
+                                    <option value={1}>1</option>
                                 </select>
                             </span>
                         </p>
                         <div className="control is-expanded">
                             <input
-                                onBlur={handleTextChange}
                                 onChange={handleTextChange}
                                 type="text"
                                 className="input"
