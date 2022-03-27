@@ -1,6 +1,7 @@
 import { MdStar } from "react-icons/md";
+import { FiEdit2 } from "react-icons/fi";
 
-function FeedbackCard({ item, handleDelete }) {
+function FeedbackCard({ item, handleDelete, handleEdit }) {
     const { id, rating, review } = item;
 
     return (
@@ -14,6 +15,13 @@ function FeedbackCard({ item, handleDelete }) {
                     onClick={() => handleDelete(id)}
                     className="delete"
                 ></button>
+                <button
+                    onClick={() => handleEdit(item)}
+                    className="edit"
+                    style={{ padding: "3px 9px 1px 3px" }}
+                >
+                    <FiEdit2 color="white" />
+                </button>
                 {review}
             </div>
         </div>

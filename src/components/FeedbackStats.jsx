@@ -1,7 +1,11 @@
 import React from "react";
+import { useContext } from "react";
 import { MdStar } from "react-icons/md";
+import FeedbackContext from "../context/FeedbackContext";
 
-function FeedbackStats({ feedbacks }) {
+function FeedbackStats() {
+    const { feedbacks } = useContext(FeedbackContext);
+
     let averageRating =
         feedbacks.reduce((acc, curr) => acc + curr.rating, 0) /
         feedbacks.length;

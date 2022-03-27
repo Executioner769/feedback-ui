@@ -1,9 +1,19 @@
 import React from "react";
 import FeedbackCard from "./shared/FeedbackCard";
+import { useContext } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackItem(props) {
-    const { feedback, handleDelete } = props;
-    return <FeedbackCard item={feedback} handleDelete={handleDelete} />;
+    const { handleDelete, handleEdit } = useContext(FeedbackContext);
+
+    const { feedback } = props;
+    return (
+        <FeedbackCard
+            item={feedback}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+        />
+    );
 }
 
 export default FeedbackItem;
